@@ -15,7 +15,7 @@ public class Main {
      */
     public static void main(String[] args) {
         
-        Grafo g = new Grafo(9);
+        Grafo g = new Grafo(6);
 
         g.agregarVertice("A");
         g.agregarVertice("B");
@@ -23,41 +23,45 @@ public class Main {
         g.agregarVertice("D");
         g.agregarVertice("E");
         g.agregarVertice("F");
-        g.agregarVertice("G");
-        g.agregarVertice("H");
-        g.agregarVertice("I");
 
-        g.mostrarVertices();
-        System.out.println();
-        g.agregarArista("A", "B", 3);
-        g.agregarArista("A", "G", 1);
-        g.agregarArista("A", "D", 1);
-        g.agregarArista("B", "C", 8);
-        g.agregarArista("B", "G", 6);
-        g.agregarArista("C", "H", 7);
-        g.agregarArista("C", "I", 1);
-        g.agregarArista("D", "G", 3);
-        g.agregarArista("D", "E", 10);
-        g.agregarArista("F", "H", 5);
-        g.agregarArista("F", "I", 8);
-        g.agregarArista("E", "G", 9);
-        g.agregarArista("E", "F", 2);
-        g.agregarArista("H", "I", 6);
+        g.agregarArista("A", "B", 2);
+        g.agregarArista("B", "A", 2);
+
+        g.agregarArista("B", "E", 6);
+        g.agregarArista("E", "B", 6);
+
+        g.agregarArista("E", "C", 9);
+        g.agregarArista("C", "E", 9);
+
+        g.agregarArista("C", "F", 3);
+        g.agregarArista("F", "C", 3);
+
+        g.agregarArista("F", "D", 2);
+        g.agregarArista("D", "F", 2);
+
+        g.agregarArista("D", "A", 8);
+        g.agregarArista("A", "D", 8);
+
+        g.agregarArista("B", "D", 5);
+        g.agregarArista("D", "B", 5);
+        
+        g.agregarArista("D", "E", 3);
+        g.agregarArista("E", "D", 3);
+
+        g.agregarArista("E", "F", 1);
+        g.agregarArista("F", "E", 1);
+
 
         g.mostrarMatriz();
-        System.out.println();
-        g.getDegree("A");
-        System.out.println();
-        g.eliminarVertice("A");
-        g.mostrarVertices();
-        g.mostrarMatriz();
-        System.out.println();
-        g.getDegree("A");
 
-        g.getDegree("B");
-        g.agregarArista("A", "Z",7);
-        g.eliminarVertice("Y");
-        g.eliminarArista("A", "Z");
+
+        System.out.println();
+
+        g.BFS("A");
+        g.restore();
+
+        System.out.println();
+        g.DFS("A");
 
     }
     

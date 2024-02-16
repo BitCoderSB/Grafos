@@ -6,6 +6,10 @@ package G;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Stack;
 
 /**
  *
@@ -16,10 +20,12 @@ class Vertice {
 
     public String name;
     public int degree;
+    public boolean visited;
 
     public Vertice(String name){
         this.name = name;
         degree = 0;
+        visited = false;
     }
 
     public int getDegree(){
@@ -38,6 +44,9 @@ public class Grafo {
     private String[] array;
     private int cont;
     private HashMap<String, Vertice> vertices;
+    private Stack<Integer> pila;
+    private Queue<Integer> cola;
+    private boolean a;
 
     public Grafo(int n){
 
@@ -45,6 +54,9 @@ public class Grafo {
         cont = 0;
         vertices = new HashMap<>();
         array = new String[n];
+        a = true;
+        pila = new Stack<Integer>();
+        cola = new LinkedList<Integer>();
 
         for(int i = 0; i < n; i++){
             array[i] = "nd";
@@ -138,7 +150,7 @@ public class Grafo {
             }
             
         }
-        System.out.println();
+        System.out.println("\n");
         for(int i = 0; i < array.length; i++){
             
             if(!array[i].equals("nd")){
@@ -183,6 +195,73 @@ public class Grafo {
         System.out.println(v.degree);
     }
 
+    public void DFS(String name){
+
+        Vertice v = vertices.get(name);
+        v.visited = true;
+
+        int indice = index(name);
+        
+        
+        
+
+        for(int j = 0; j < array.length; j++){
+            if(M[indice][j] != 0){
+                v = vertices.get(array[j]);                
+                if(v.visited == false){
+                    System.out.println(name);
+                    pila.push(indice);
+                    DFS(v.name);
+                    
+                }
+
+            }
+        }
+        
+        if(!pila.isEmpty()){
+            if(a){
+                System.out.println(name);
+                a = false;
+            }
+            DFS(array[pila.pop()]);
+        }else{
+            a = true;
+            return;
+        }
+
+    }
+
+    public void BFS(String name){
+
+        if(a){
+            System.out.println(name);
+            a = false;
+        }
+        Vertice v = vertices.get(name);
+        v.visited = true;
+
+        int indice = index(name);
+
+        for(int j = 0; j < array.length; j++){
+            if(M[indice][j] != 0){
+                v = vertices.get(array[j]);
+                if(v.visited == false){
+                    System.out.println(array[j]);
+                    cola.offer(j);
+                    v.visited = true;
+                }
+            }
+        }
+
+        if(!cola.isEmpty()){
+            BFS(array[cola.poll()]);
+        }else{
+            a = true;
+            return;
+        }
+
+    }
+
     private int index(String name){
 
         for(int i = 0; i < array.length; i++){
@@ -225,6 +304,13 @@ public class Grafo {
         
         
 
+    }
+
+    public void restore(){
+        for (Map.Entry<String, Vertice> entry : vertices.entrySet()) {
+            Vertice value = entry.getValue();
+            value.visited = false;
+        }
     }
 
 
