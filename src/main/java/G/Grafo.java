@@ -4,7 +4,10 @@
  */
 package G;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -16,16 +19,24 @@ import java.util.Stack;
  * @author Carlos
  */
 
+
+
 class Vertice {
 
     public String name;
     public int degree;
     public boolean visited;
+    public int pesoT; 
+    public int pesoF;
 
     public Vertice(String name){
         this.name = name;
         degree = 0;
         visited = false;
+
+        pesoF = -1;
+        pesoT = Integer.MAX_VALUE;
+
     }
 
     public int getDegree(){
@@ -36,6 +47,9 @@ class Vertice {
         return name;
     }
 }
+
+
+
 
 
 public class Grafo {
@@ -311,6 +325,104 @@ public class Grafo {
             Vertice value = entry.getValue();
             value.visited = false;
         }
+    }
+
+
+
+    // ============================================Dijstra================================================================
+
+    public void Dijkstra(String Origen, String Final){
+
+        Vertice v = vertices.get(Origen);
+        Vertice v1;
+
+        ArrayList<String> list = new ArrayList<>();
+
+        v.pesoT = 0;
+        v.pesoF = 0;
+
+        int indice = index(Origen);
+
+        while (pF()) {
+            System.out.println("1");
+            
+            for(int i = 0; i < array.length; i++){
+                v1 = vertices.get(array[i]);
+
+                if(M[indice][i] != 0 && v1.pesoF == -1){
+                    int peso = v.pesoF + M[indice][i];
+
+                    if(peso < v1.pesoT){
+                        v1.pesoT = peso;
+                    }
+                }
+
+            }
+
+            int menorPeso = Integer.MAX_VALUE;
+
+            for(String k : vertices.keySet()){
+                v1 = vertices.get(k);
+
+                if(v1.pesoF == -1 && v1.pesoT < menorPeso){
+                    v = v1;
+                    menorPeso = v1.pesoT;
+                }
+            }
+
+            v.pesoF = v.pesoT;
+
+            indice = index(v.name);
+
+        }
+
+        v = vertices.get(Final);
+        indice = index(Final);
+        list.add(v.name);
+        while(!v.name.equals(Origen)){
+
+            for(int i = 0; i < array.length; i++){
+                
+                v1 = vertices.get(array[i]);
+                int peso = v.pesoF - M[indice][i];
+                if(peso == v1.pesoF){
+                    list.add(v1.name);
+                    v = v1;
+                    indice = index(v.name);
+                    break;
+                }
+
+            }
+
+
+
+        }
+
+        Collections.reverse(list);
+
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i));
+        }
+
+
+    }
+
+
+    private boolean pF(){
+
+        Vertice v;
+
+        for(String k : vertices.keySet()){
+
+            v = vertices.get(k);
+
+            if(v.pesoF == -1){
+                return true;
+            }
+
+        }
+
+        return false;
     }
 
 
